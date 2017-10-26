@@ -98,31 +98,6 @@
   });
 
   /* ---------------------------------------------------------------------------
-   * Filter projects.
-   * --------------------------------------------------------------------------- */
-
-  $('.projects-container').each(function(index, container) {
-    let $container = $(container);
-    let $section = $container.closest('section');
-
-    $container.imagesLoaded(function() {
-      // Initialize Isotope after all images have loaded.
-      $container.isotope({
-        itemSelector: '.isotope-item',
-        layoutMode: 'masonry',
-        filter: $section.find('.default-project-filter').text()
-      });
-      // Filter items when filter link is clicked.
-      $section.find('.project-filters a').click(function() {
-        let selector = $(this).attr('data-filter');
-        $container.isotope({filter: selector});
-        $(this).removeClass('active').addClass('active').siblings().removeClass('active all');
-        return false;
-      });
-    });
-  });
-
-  /* ---------------------------------------------------------------------------
    * Filter publications.
    * --------------------------------------------------------------------------- */
 
@@ -262,12 +237,72 @@
       resizeTimer = setTimeout(fixScrollspy, 200);
     });
 
+    // Filter projects.
+    $('.projects-container').each(function(index, container) {
+      let $container = $(container);
+      let $section = $container.closest('section');
+      let layout = 'masonry';
+      if ($section.find('.isotope').hasClass('js-layout-row')) {
+        layout = 'fitRows';
+      }
+
+      $container.imagesLoaded(function() {
+        // Initialize Isotope after all images have loaded.
+        $container.isotope({
+          itemSelector: '.isotope-item',
+          layoutMode: layout,
+          filter: $section.find('.default-project-filter').text()
+        });
+        // Filter items when filter link is clicked.
+        $section.find('.project-filters a').click(function() {
+          let selector = $(this).attr('data-filter');
+          $container.isotope({filter: selector});
+          $(this).removeClass('active').addClass('active').siblings().removeClass('active all');
+          return false;
+        });
+      });
+    });
+
     // Enable publication filter for publication index page.
     if ($('.pub-filters-select')) {
       filter_publications();
       // Useful for changing hash manually (e.g. in development):
       // window.addEventListener('hashchange', filter_publications, false);
     }
+
+    // Load citation modal on 'Cite' click.
+    $('.js-cite-modal').click(function(e) {
+      e.preventDefault();
+      let filename = $(this).attr('data-filename');
+      let modal = $('#modal');
+      modal.find('.modal-body').load( filename , function( response, status, xhr ) {
+        if ( status == 'error' ) {
+          let msg = "Error: ";
+          $('#modal-error').html( msg + xhr.status + " " + xhr.statusText );
+        } else {
+          $('.js-download-cite').attr('href', filename);
+        }
+      });
+      modal.modal('show');
+    });
+
+    // Copy citation text on 'Copy' click.
+    $('.js-copy-cite').click(function(e) {
+      e.preventDefault();
+      // Get selection.
+      let range = document.createRange();
+      let code_node = document.querySelector('#modal .modal-body');
+      range.selectNode(code_node);
+      window.getSelection().addRange(range);
+      try {
+        // Execute the copy command.
+        document.execCommand('copy');
+      } catch(e) {
+        console.log('Error: citation copy failed.');
+      }
+      // Remove selection.
+      window.getSelection().removeRange(range);
+    });
 
     // Initialise Google Maps if necessary.
     initMap();
