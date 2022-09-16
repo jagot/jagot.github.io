@@ -3,6 +3,11 @@
 @import url(http://fonts.googleapis.com/css?family=PT+Sans);
 @import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
 
+@import "./fontawesome/fontawesome.scss";
+@import "./fontawesome/solid.scss";
+@import "./fontawesome/brands.scss";
+@import "./css/academicons.css";
+
 :root {
   color-scheme: light dark; /* both supported */
 }
@@ -375,4 +380,12 @@ h6 {
 .itsame {
     font-weight: bold;
     color: var(--color-1);
+}
+
+.big-icon {
+    font-size: 2rem;
+}
+
+.big-icon:hover {
+    transform: scale(1.2);
 }
