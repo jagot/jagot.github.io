@@ -1,0 +1,12 @@
+*~
+.DS_Store
+public/
+bibliography/auto/
+bibliography/bibliography.bib
+bibliography/*.aux
+bibliography/*.bcf
+bibliography/*.blg
+bibliography/*.log
+bibliography/*.out
+bibliography/*.pdf
+bibliography/*.run.xml

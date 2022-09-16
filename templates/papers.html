@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  {{ section.title }}
+</h1>
+
+{% set data = load_data(path="/bibliography/papers.bib", format="bibtex") %}
+
+<ol>
+  {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
+  <li>
+    <em>{{ bib.tags.title | replace(from="--", to="–") | replace(from="{", to="") | replace(from="}", to="") }}</em><br/>
+    {% for author in bib.tags.author | split(pat=" and ") %}
+    {% if loop.last and not loop.first %} and {% endif %}
+    {% set authorname = author | split(pat=",") | reverse | join(sep=" ") | trim %}
+    <span class="author{% if authorname == config.extra.whatsmyname %} itsame{% endif %}">{{ authorname }}</span>{% if not loop.last %},{% endif %}
+    {% endfor %}
+    <br/>
+    {% if bib.tags.journal %}
+    {% if bib.tags.doi or bib.tags.url %}
+    <a href="{% if bib.tags.doi %}https://doi.org/{{bib.tags.doi}}{% else %}{{bib.tags.url}}{% endif %}">
+      {% endif %}
+      <em>{{ bib.tags.journal }}</em>
+      {% if bib.tags.volume %}
+      <b>{{ bib.tags.volume }}</b>{% if bib.tags.number %}({{ bib.tags.number }}){% endif %}
+      {% endif %}
+      
+      {% if bib.tags.pages %}{{ bib.tags.pages | replace(from="--", to="–") }}{% endif %}
+      ({{ bib.tags.date }})
+      {% if bib.tags.doi or bib.tags.url %}
+    </a>
+    {% endif %}
+
+    {% else %}
+    
+    {% if bib.tags.note %} {{ bib.tags.note }} {{ bib.tags.date }}<br/> {% endif %}
+    
+    {% if bib.tags.doi %}
+    DOI: <a href="https://doi.org/{{bib.tags.doi}}">{{bib.tags.doi}}</a><br/>
+    {% elif bib.tags.url and not bib.tags.eprinttype %}
+    URL: <a href="{{bib.tags.url}}">{{bib.tags.url}}</a><br/>
+    {% endif %}
+    {% endif %}
+    
+    {% if bib.tags.eprinttype and bib.tags.eprinttype == "arXiv" %}
+    arXiv: 
+    {% if bib.tags.url %}
+    <a href="{{bib.tags.url}}">{{bib.tags.url | split(pat="/") | last}}</a>
+    {% elif bib.tags.eprint %}
+    <a href="https://arxiv.org/abs/{{bib.tags.eprint}}">{{bib.tags.eprint}}</a>
+    {% if bib.tags.eprintclass %}[{{bib.tags.eprintclass}}]{% endif %}
+    {% endif %}
+    {% endif %}
+
+    {% if bib.tags.isbn %}ISBN: {{bib.tags.isbn}} {% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% endblock content %}
