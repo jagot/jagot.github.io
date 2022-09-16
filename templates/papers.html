@@ -34,7 +34,8 @@
 
     {% else %}
     
-    {% if bib.tags.note %} {{ bib.tags.note }} {{ bib.tags.date }}<br/> {% endif %}
+    {% if bib.tags.note %} {{ bib.tags.note |
+    replace(from="\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {{ bib.tags.date }}<br/> {% endif %}
     
     {% if bib.tags.doi %}
     DOI: <a href="https://doi.org/{{bib.tags.doi}}">{{bib.tags.doi}}</a><br/>
