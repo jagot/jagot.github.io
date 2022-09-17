@@ -6,11 +6,13 @@
 <h1 class="title">
   {{ section.title }}
 </h1>
-{% block section_content %}
-<ul>
-  {% for page in section.pages %}
-  <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
-  {% endfor %}
-</ul>
-{% endblock section_content %}
+<section class="section">
+  {% block section_content %}
+  <ul>
+    {% for page in section.pages %}
+    <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endblock section_content %}
+</section>
 {% endblock content %}
