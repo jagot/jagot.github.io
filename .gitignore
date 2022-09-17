@@ -4,8 +4,11 @@ public/
 bibliography/auto/
 bibliography/bibliography.bib
 bibliography/*.aux
+bibliography/*.bbl
 bibliography/*.bcf
 bibliography/*.blg
+bibliography/*.fdb_latexmk
+bibliography/*.fls
 bibliography/*.log
 bibliography/*.out
 bibliography/*.pdf
