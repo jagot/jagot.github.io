@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-  This is my homepage made with Zola.
-</h1>
-<p><a href="{{ get_url(path="@/papers/_index.md") }}">List of publications</a></p>
 
+<p><img class="portrait" src="/img/stefanos.jpg" /></p>
+<h3>{{ config.extra.whatsmyname }}</h3>
 {{ section.content | safe }}
 {% endblock content %}
