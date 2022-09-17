@@ -6,3 +6,9 @@
 <p>{{ kind }} with title <em>{{ entry }}</em></p>
 {% endfor %}
 {% endmacro show_entries %}
+
+{% macro badge(url, icon, collection="fa-solid") %}
+<a class="badge" href="{{ url }}" target="_blank">
+  <span class="{{collection}} {{icon}} big-icon"></span>
+</a>
+{% endmacro badge %}

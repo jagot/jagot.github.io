@@ -448,3 +448,20 @@ img.conference-image {
 .next-entry {
     float: right;
 }
+
+.person-info {
+    text-align: center;
+}
+
+ul.network {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+}
+
+ul.network li {
+    margin: 0;
+    margin-right: 2em;
+}
