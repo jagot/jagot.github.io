@@ -1,0 +1,8 @@
+{% macro show_entries(entries, kind) %}
+{% if entries is string %}
+{% set entries = [entries] %}
+{% endif %}
+{% for entry in entries %}
+<p>{{ kind }} with title <em>{{ entry }}</em></p>
+{% endfor %}
+{% endmacro show_entries %}

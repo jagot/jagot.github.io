@@ -1,12 +1,7 @@
-{% extends "base.html" %}
+{% extends "section-base.html" %}
 
-{% block content %}
-<h1 class="title">
-  {{ section.title }}
-</h1>
-
+{% block section_content %}
 {% set data = load_data(path="/bibliography/papers.bib", format="bibtex") %}
-
 <ol>
   {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
   <li>
@@ -70,4 +65,4 @@
   </li>
   {% endfor %}
 </ol>
-{% endblock content %}
+{% endblock section_content %}

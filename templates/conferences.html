@@ -1,0 +1,17 @@
+{% extends "section-base.html" %}
+{% import "macros.html" as macros %}
+
+{% block section_content %}
+<ul id="conference-list">
+  {% for page in section.pages %}
+  <li class="conference">
+    <a href="{{ page.permalink | safe }}">{{ page.title }}</a>
+    {{ page.extra.location }},
+    {{ page.date }}–{{ page.extra.enddate }}
+    {% if page.extra.invited_talk %}{{ macros::show_entries(entries=page.extra.invited_talk, kind="Invited talk") }}{% endif %}
+    {% if page.extra.talk %}{{ macros::show_entries(entries=page.extra.talk, kind="Talk") }}{% endif %}
+    {% if page.extra.poster %}{{ macros::show_entries(entries=page.extra.poster, kind="Poster") }}{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock section_content %}

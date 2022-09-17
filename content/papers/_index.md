@@ -1,4 +1,4 @@
 +++
-title = "ΤΙΠΟΤΑ – List of publications"
+title = "List of Publications"
 template = "papers.html"
 +++
