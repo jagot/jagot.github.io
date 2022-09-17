@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+<nav class="pagination">
+  {% if page.lower %}
+  <a href="{{page.lower.path}}" class="previous-entry">&lt;&lt; {{ page.lower.title }}</a>
+  {% endif %}
+  {% if page.higher %}
+  <a href="{{page.higher.path}}" class="next-entry">{{ page.higher.title }} &gt;&gt;</a>
+  {% endif %}
+</nav>
 {% block page_content %}
 <h1 class="title">
   {{ page.title }}

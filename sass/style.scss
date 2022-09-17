@@ -399,3 +399,20 @@ h6 {
 .conference p {
     margin: 0;
 }
+
+img.conference-image {
+    width: 100%;
+}
+
+.pagination {
+    margin-bottom: 1em;
+    padding: 1em;
+    padding-top: 0;
+}
+
+.previous-entry {
+    float: left;
+}
+.next-entry {
+    float: right;
+}
