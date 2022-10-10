@@ -29,15 +29,14 @@
 
     {% else %}
 
-    {% if bib.tags.note %} {{ bib.tags.note |
-    replace(from="\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {{ bib.tags.date }}<br/> {% endif %}
-
     {% if bib.tags.doi %}
     DOI: <a href="https://doi.org/{{bib.tags.doi}}" target="_blank">{{bib.tags.doi}}</a><br/>
     {% elif bib.tags.url and not bib.tags.eprinttype %}
     URL: <a href="{{bib.tags.url}}" target="_blank">{{bib.tags.url}}</a><br/>
     {% endif %}
     {% endif %}
+
+    {% if bib.tags.note %} {{ bib.tags.note | replace(from="\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {% endif %}
 
     {% if bib.tags.eprinttype and bib.tags.eprinttype == "arXiv" %}
     {% if bib.tags.url %}
@@ -54,8 +53,9 @@
     &nbsp;
     {% if bib.tags.file %}
     <a href="{{bib.tags.file}}" target="_blank"><span class="fa-solid fa-file-pdf"></span></a>
-    {% else %}
-    <a href="https://arxiv.org/pdf/{{eprint}}.pdf" target="_blank"><span class="fa-solid fa-file-pdf"></span></a>
+    {% endif %}
+    {% if eprint %}
+    <a href="https://arxiv.org/pdf/{{eprint}}.pdf" target="_blank"><span class="ai ai-arxiv"></span></a>
     {% endif %}
     {% if bib.tags.doi %}
     <a href="javascript:navigator.clipboard.writeText('{{ bib.tags.doi }}');" title="Copy DOI to clipboard">
