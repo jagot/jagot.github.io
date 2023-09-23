@@ -1,5 +1,5 @@
 +++
-title = "AttoChem"
+title = "AttoChem Annual Meeting"
 date = 2022-09-19
 [extra]
 location = "Prague, Czechia"

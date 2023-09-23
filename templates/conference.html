@@ -13,5 +13,6 @@
 {% if page.extra.invited_talk %}{{ macros::show_entries(entries=page.extra.invited_talk, kind="Invited talk") }}{% endif %}
 {% if page.extra.talk %}{{ macros::show_entries(entries=page.extra.talk, kind="Talk") }}{% endif %}
 {% if page.extra.poster %}{{ macros::show_entries(entries=page.extra.poster, kind="Poster") }}{% endif %}
+{% if page.extra.note %}<p>{{ page.extra.note }}</p>{% endif %}
 <a href="{{ page.extra.url }}">{{ page.extra.url }}</a>
 {% endblock page_content %}
