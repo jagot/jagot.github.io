@@ -3,7 +3,7 @@ papers.bib: papers.bcf
 	biber --output_format=bibtex --output-field-replace=location:address,journaltitle:journal -O $@ $^
 
 papers.bcf: papers.tex bibliography.bib
-	pdflatex -interaction=batchmode papers
+	latexmk -pdflatex=pdflatex papers
 
 .PHONY: clean
 clean:
