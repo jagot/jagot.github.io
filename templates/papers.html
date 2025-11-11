@@ -64,7 +64,8 @@
 
 {% block section_content %}
 {% set data = load_data(path="/bibliography/papers.bib", format="bibtex") %}
-{% set preprints = data.bibliographies | filter(attribute="entry_type", value="ONLINE") %}
+{% set bibliographies = data.bibliographies | sort(attribute="tags.date") | reverse %}
+{% set preprints = bibliographies | filter(attribute="entry_type", value="ONLINE") %}
 {% if preprints %}
 <h2>Preprints</h2>
 <ol>
@@ -77,8 +78,14 @@
 {% endif %}
 <h2>Peer-Reviewed Publications</h2>
 <ol>
-  {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
+  {% set_global year = "3000" %}
+  {% for bib in bibliographies %}
   {% if bib.entry_type | lower != "online" %}
+  {% set bib_year = bib.tags.date | split(pat="-") | first %}
+  {% if year != bib_year %}
+  <h3>{{ bib_year }}</h3>
+  {% endif %}
+  {% set_global year = bib_year %}
   {{ self::format_bib_entry(bib=bib) }}
   {% endif %}
   {% endfor %}

@@ -3,7 +3,13 @@
 
 {% block section_content %}
 <ul id="conference-list">
+  {% set year = "3000" %}
   {% for page in section.pages %}
+  {% set conf_year = page.date | date(format="%Y") %}
+  {% if year != conf_year %}
+  <h3>{{ conf_year }}</h3>
+  {% endif %}
+  {% set_global year = conf_year %}
   <li class="conference">
     <a href="{{ page.permalink | safe }}">{{ page.title }}</a>
     {{ page.extra.location }},
