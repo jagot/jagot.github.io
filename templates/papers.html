@@ -1,68 +1,86 @@
 {% extends "section-base.html" %}
 
+{% macro format_bib_entry(bib) %}
+<li>
+  <em>{{ bib.tags.title | replace(from="--", to="–") | replace(from="{", to="") | replace(from="}", to="") }}</em><br/>
+  {% for author in bib.tags.author | split(pat=" and ") %}
+  {% if loop.last and not loop.first %} and {% endif %}
+  {% set authorname = author | split(pat=",") | reverse | join(sep=" ") | trim %}
+  <span class="author{% if authorname == config.extra.whatsmyname %} itsame{% endif %}">{{ authorname }}</span>{% if not loop.last %},{% endif %}
+  {% endfor %}
+  <br/>
+  {% if bib.tags.journal %}
+  {% if bib.tags.doi or bib.tags.url %}
+  <a href="{% if bib.tags.doi %}https://doi.org/{{bib.tags.doi}}{% else %}{{bib.tags.url}}{% endif %}" target="_blank">
+    {% endif %}
+    <em>{{ bib.tags.journal }}</em>
+    {% if bib.tags.volume %}
+    <b>{{ bib.tags.volume }}</b>{% if bib.tags.number %}({{ bib.tags.number }}){% endif %}
+    {% endif %}
+
+    {% if bib.tags.pages %}{{ bib.tags.pages | replace(from="--", to="–") }}{% endif %}
+    ({{ bib.tags.date }})
+    {% if bib.tags.doi or bib.tags.url %}
+  </a>
+  {% endif %}
+
+  {% else %}
+
+  {% if bib.tags.doi %}
+  DOI: <a href="https://doi.org/{{bib.tags.doi}}" target="_blank">{{bib.tags.doi}}</a><br/>
+  {% elif bib.tags.url and not bib.tags.eprinttype %}
+  URL: <a href="{{bib.tags.url}}" target="_blank">{{bib.tags.url}}</a><br/>
+  {% endif %}
+  {% endif %}
+
+  {% if bib.tags.note %} {{ bib.tags.note | replace(from="\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {% endif %}
+
+  {% if bib.tags.eprinttype and bib.tags.eprinttype == "arXiv" %}
+  {% if bib.tags.url %}
+  {% set eprint = bib.tags.url | split(pat="/") | last %}
+  {% elif bib.tags.eprint %}
+  {% set eprint = bib.tags.eprint %}
+  {% endif %}
+  arXiv:
+  <a href="https://arxiv.org/abs/{{eprint}}" target="_blank">{{eprint}}</a>
+  {% if bib.tags.eprintclass %}[{{bib.tags.eprintclass}}]{% endif %}
+  {% endif %}
+
+  {% if bib.tags.isbn %}ISBN: {{bib.tags.isbn}} {% endif %}
+  &nbsp;
+  {% if bib.tags.file %}
+  <a href="{{bib.tags.file}}" target="_blank"><span class="fa-solid fa-file-pdf"></span></a>
+  {% endif %}
+  {% if eprint %}
+  <a href="https://arxiv.org/pdf/{{eprint}}.pdf" target="_blank"><span class="ai ai-arxiv"></span></a>
+  {% endif %}
+  {% if bib.tags.doi %}
+  <a href="javascript:navigator.clipboard.writeText('{{ bib.tags.doi }}');" title="Copy DOI to clipboard">
+    <span class="ai ai-doi"></span>
+  </a>
+  {% endif %}
+</li>
+{% endmacro format_bib_entry %}
+
 {% block section_content %}
 {% set data = load_data(path="/bibliography/papers.bib", format="bibtex") %}
+{% set preprints = data.bibliographies | filter(attribute="entry_type", value="ONLINE") %}
+{% if preprints %}
+<h2>Preprints</h2>
 <ol>
   {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
-  <li>
-    <em>{{ bib.tags.title | replace(from="--", to="–") | replace(from="{", to="") | replace(from="}", to="") }}</em><br/>
-    {% for author in bib.tags.author | split(pat=" and ") %}
-    {% if loop.last and not loop.first %} and {% endif %}
-    {% set authorname = author | split(pat=",") | reverse | join(sep=" ") | trim %}
-    <span class="author{% if authorname == config.extra.whatsmyname %} itsame{% endif %}">{{ authorname }}</span>{% if not loop.last %},{% endif %}
-    {% endfor %}
-    <br/>
-    {% if bib.tags.journal %}
-    {% if bib.tags.doi or bib.tags.url %}
-    <a href="{% if bib.tags.doi %}https://doi.org/{{bib.tags.doi}}{% else %}{{bib.tags.url}}{% endif %}" target="_blank">
-      {% endif %}
-      <em>{{ bib.tags.journal }}</em>
-      {% if bib.tags.volume %}
-      <b>{{ bib.tags.volume }}</b>{% if bib.tags.number %}({{ bib.tags.number }}){% endif %}
-      {% endif %}
-
-      {% if bib.tags.pages %}{{ bib.tags.pages | replace(from="--", to="–") }}{% endif %}
-      ({{ bib.tags.date }})
-      {% if bib.tags.doi or bib.tags.url %}
-    </a>
-    {% endif %}
-
-    {% else %}
-
-    {% if bib.tags.doi %}
-    DOI: <a href="https://doi.org/{{bib.tags.doi}}" target="_blank">{{bib.tags.doi}}</a><br/>
-    {% elif bib.tags.url and not bib.tags.eprinttype %}
-    URL: <a href="{{bib.tags.url}}" target="_blank">{{bib.tags.url}}</a><br/>
-    {% endif %}
-    {% endif %}
-
-    {% if bib.tags.note %} {{ bib.tags.note | replace(from="\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {% endif %}
-
-    {% if bib.tags.eprinttype and bib.tags.eprinttype == "arXiv" %}
-    {% if bib.tags.url %}
-    {% set eprint = bib.tags.url | split(pat="/") | last %}
-    {% elif bib.tags.eprint %}
-    {% set eprint = bib.tags.eprint %}
-    {% endif %}
-    arXiv:
-    <a href="https://arxiv.org/abs/{{eprint}}" target="_blank">{{eprint}}</a>
-    {% if bib.tags.eprintclass %}[{{bib.tags.eprintclass}}]{% endif %}
-    {% endif %}
-
-    {% if bib.tags.isbn %}ISBN: {{bib.tags.isbn}} {% endif %}
-    &nbsp;
-    {% if bib.tags.file %}
-    <a href="{{bib.tags.file}}" target="_blank"><span class="fa-solid fa-file-pdf"></span></a>
-    {% endif %}
-    {% if eprint %}
-    <a href="https://arxiv.org/pdf/{{eprint}}.pdf" target="_blank"><span class="ai ai-arxiv"></span></a>
-    {% endif %}
-    {% if bib.tags.doi %}
-    <a href="javascript:navigator.clipboard.writeText('{{ bib.tags.doi }}');" title="Copy DOI to clipboard">
-    <span class="ai ai-doi"></span>
-    </a>
-    {% endif %}
-  </li>
+  {% if bib.entry_type | lower == "online" %}
+  {{ self::format_bib_entry(bib=bib) }}
+  {% endif %}
+  {% endfor %}
+</ol>
+{% endif %}
+<h2>Peer-Reviewed Publications</h2>
+<ol>
+  {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
+  {% if bib.entry_type | lower != "online" %}
+  {{ self::format_bib_entry(bib=bib) }}
+  {% endif %}
   {% endfor %}
 </ol>
 {% endblock section_content %}
