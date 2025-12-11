@@ -68,7 +68,7 @@
 {% set preprints = bibliographies | filter(attribute="entry_type", value="ONLINE") %}
 {% if preprints %}
 <h2>Preprints</h2>
-<ol>
+<ol reversed>
   {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
   {% if bib.entry_type | lower == "online" %}
   {{ self::format_bib_entry(bib=bib) }}
@@ -77,7 +77,7 @@
 </ol>
 {% endif %}
 <h2>Peer-Reviewed Publications</h2>
-<ol>
+<ol reversed>
   {% set_global year = "3000" %}
   {% for bib in bibliographies %}
   {% if bib.entry_type | lower != "online" %}
