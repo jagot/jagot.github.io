@@ -1,6 +1,6 @@
 {% extends "section-base.html" %}
 
-{% macro format_bib_entry(bib) %}
+{% component format_bib_entry(bib: map, config: map) %}
 <li>
   <em>{{ bib.tags.title | replace(from="--", to="–") | replace(from="{", to="") | replace(from="}", to="") }}</em><br/>
   {% for author in bib.tags.author | split(pat=" and ") %}
@@ -33,7 +33,7 @@
   {% endif %}
   {% endif %}
 
-  {% if bib.tags.note %} {{ bib.tags.note | replace(from="\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {% endif %}
+  {% if bib.tags.note %} {{ bib.tags.note | replace(from="\\emph{",to="<em>") | replace(from="}",to="</em>") | safe }} {% endif %}
 
   {% if bib.tags.eprinttype and bib.tags.eprinttype == "arXiv" %}
   {% if bib.tags.url %}
@@ -60,18 +60,18 @@
   </a>
   {% endif %}
 </li>
-{% endmacro format_bib_entry %}
+{% endcomponent format_bib_entry %}
 
 {% block section_content %}
 {% set data = load_data(path="/bibliography/papers.bib", format="bibtex") %}
 {% set bibliographies = data.bibliographies | sort(attribute="tags.date") | reverse %}
-{% set preprints = bibliographies | filter(attribute="entry_type", value="ONLINE") %}
+{% set preprints = [bib for bib in bibliographies if bib.entry_type | lower == "online"] %}
 {% if preprints %}
 <h2>Preprints</h2>
 <ol reversed>
   {% for bib in data.bibliographies | sort(attribute="tags.date") | reverse %}
   {% if bib.entry_type | lower == "online" %}
-  {{ self::format_bib_entry(bib=bib) }}
+  {{ <format_bib_entry bib config /> }}
   {% endif %}
   {% endfor %}
 </ol>
@@ -86,7 +86,7 @@
   <h3>{{ bib_year }}</h3>
   {% endif %}
   {% set_global year = bib_year %}
-  {{ self::format_bib_entry(bib=bib) }}
+  {{ <format_bib_entry bib config /> }}
   {% endif %}
   {% endfor %}
 </ol>

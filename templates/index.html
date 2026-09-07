@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import "macros.html" as macros %}
 
 {% block title %} – {{ section.title }}{% endblock title %}
 
@@ -10,13 +9,13 @@
   <h4>{{ config.extra.whatsmytitle }}</h4>
 
   <ul class="network">
-    <li>{{ macros::badge(url="mailto:jagot@tipota.org", icon="fa-envelope") }}</li>
-    <li>{{ macros::badge(url="https://scholar.google.com/citations?user=pmg1sp8AAAAJ", icon="ai-google-scholar", collection="ai") }}</li>
-    <li>{{ macros::badge(url="https://www.researchgate.net/profile/Stefanos_Carlstroem", icon="fa-researchgate", collection="fa-brands") }}</li>
-    <li>{{ macros::badge(url="https://orcid.org/0000-0002-1230-4496", icon="fa-orcid", collection="fa-brands") }}</li>
-    <li>{{ macros::badge(url="https://arxiv.org/search/?query=Carlstrom%2C+S&searchtype=author&abstracts=show&order=-announced_date_first&size=50", icon="ai-arxiv", collection="ai") }}</li>
-    <li>{{ macros::badge(url="https://se.linkedin.com/in/stefanos-carlstr%c3%b6m-80624238", icon="fa-linkedin", collection="fa-brands") }}</li>
-    <li>{{ macros::badge(url="https://github.com/jagot", icon="fa-github", collection="fa-brands") }}</li>
+    <li>{{ <badge url="mailto:jagot@tipota.org" icon="fa-envelope" /> }}</li>
+    <li>{{ <badge url="https://scholar.google.com/citations?user=pmg1sp8AAAAJ" icon="ai-google-scholar" collection="ai" /> }}</li>
+    <li>{{ <badge url="https://www.researchgate.net/profile/Stefanos_Carlstroem" icon="fa-researchgate" collection="fa-brands" /> }}</li>
+    <li>{{ <badge url="https://orcid.org/0000-0002-1230-4496" icon="fa-orcid" collection="fa-brands" /> }}</li>
+    <li>{{ <badge url="https://arxiv.org/search/?query=Carlstrom%2C+S&searchtype=author&abstracts=show&order=-announced_date_first&size=50" icon="ai-arxiv" collection="ai" /> }}</li>
+    <li>{{ <badge url="https://se.linkedin.com/in/stefanos-carlstr%c3%b6m-80624238" icon="fa-linkedin" collection="fa-brands" /> }}</li>
+    <li>{{ <badge url="https://github.com/jagot" icon="fa-github" collection="fa-brands" /> }}</li>
   </ul>
 </div>
 

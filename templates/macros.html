@@ -1,14 +1,14 @@
-{% macro show_entries(entries, kind) %}
+{% component show_entries(entries, kind: string) %}
 {% if entries is string %}
 {% set entries = [entries] %}
 {% endif %}
 {% for entry in entries %}
 <p>{{ kind }} with title <em>{{ entry }}</em></p>
 {% endfor %}
-{% endmacro show_entries %}
+{% endcomponent show_entries %}
 
-{% macro badge(url, icon, collection="fa-solid") %}
+{% component badge(url: string, icon: string, collection: string = "fa-solid") %}
 <a class="badge" href="{{ url }}" target="_blank">
   <span class="{{collection}} {{icon}} big-icon"></span>
 </a>
-{% endmacro badge %}
+{% endcomponent badge %}
