@@ -396,12 +396,17 @@ menu h3 {
 }
 
 menu ul {
-    display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
     list-style: none;
     padding: 0;
     float: right;
+}
+
+@media (min-width: 600px) {
+    menu ul {
+        display: inline-flex;
+    }
 }
 
 menu ul li {
@@ -463,5 +468,11 @@ ul.network {
 
 ul.network li {
     margin: 0;
-    margin-right: 2em;
+    margin-right: 1em;
+}
+
+@media (min-width: 600px) {
+    ul.network li {
+        margin-right: 2em;
+    }
 }
